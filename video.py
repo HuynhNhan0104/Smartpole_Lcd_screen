@@ -50,6 +50,10 @@ if __name__ == "__main__":
     player = VideoWindow(url="https://www.youtube.com/watch?v=rKn4EQ3-Ns0")
     player.show()
     player.video_player.play()
+    
+    
+    
+    
 
     
 
