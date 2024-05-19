@@ -30,11 +30,11 @@ class Cell(QWidget):
         
         # Tạo và thêm văn bản vào layout
         self.text_label = QLabel(text)
-        font = QFont('Verdana', 90)
+        font = QFont('Verdana', 50)
         self.text_label.setFont(font)
         self.text_label.resize(width*0.8,height)
-        self.text_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.text_label.setStyleSheet("color: white;")
+        self.text_label.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.text_label.setStyleSheet("color: white;margin: 0 20 0 0;")
         layout.addWidget(self.text_label, stretch=4)  # chiếm 80% còn lại
         layout.setSpacing(0)
         layout.setContentsMargins(0,0,0,0)

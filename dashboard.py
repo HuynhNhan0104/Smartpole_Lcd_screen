@@ -5,11 +5,16 @@ from cell import Cell
 
 class MESSURE(enumerate):
     CO2 = 0
-    NO2 = 1
+    NOx = 1
     SO2 = 2
     CO = 3
     O3 = 4
     VOC = 5
+    PM1_0 = 6
+    PM2_5 = 7
+    PM4 = 8
+    PM10 = 9
+    
 
 
 
@@ -19,9 +24,9 @@ class Dashboard(QWidget):
         self.setFixedSize(width,height)
         layout1 = QHBoxLayout()
         # print(width)
-        self.cell0 = Cell("icon/CO2_icon.png","CO2",width/3, height/2,color="#FF6666")
-        self.cell1 = Cell("icon/NO2_icon.png","NO2",width/3, height/2,color="#66FF66")
-        self.cell2 = Cell("icon/SO2_icon.png","SO2",width/3, height/2,color="#33CCFF")
+        self.cell0 = Cell("icon/CO2_icon.png","CO2 ppm",width/3, height/2,color="#FF6666")
+        self.cell1 = Cell("icon/NOx_icon.png","NO2 ppm",width/3, height/2,color="#66FF66")
+        self.cell2 = Cell("icon/PM1_icon.png","PM1 μg/m³",width/3, height/2,color="#33CCFF")
         layout1.addWidget(self.cell0,stretch=1)
         layout1.addWidget(self.cell1,stretch=1)
         layout1.addWidget(self.cell2,stretch=1)
@@ -29,9 +34,9 @@ class Dashboard(QWidget):
         layout1.setContentsMargins(0,0,0,0)
         
         layout2 = QHBoxLayout()
-        self.cell3 = Cell("icon/CO_icon.png","CO",width/3, height/2,color="#3366FF")
-        self.cell4 = Cell("icon/O3_icon.png","O3",width/3, height/2,color="#FFCC00")
-        self.cell5 = Cell("icon/VOC_icon.png","VOC",width/3, height/2,color="#CCCCFF")
+        self.cell3 = Cell("icon/PM2.5_icon.png","PM2.5 μg/m³",width/3, height/2,color="#3366FF")
+        self.cell4 = Cell("icon/PM10_icon.png","PM10 μg/m³",width/3, height/2,color="#FFCC00")
+        self.cell5 = Cell("icon/VOC_icon.png","VOC μg/m³",width/3, height/2,color="#CCCCFF")
         layout2.addWidget(self.cell3,stretch=1)
         layout2.addWidget(self.cell4,stretch=1)
         layout2.addWidget(self.cell5,stretch=1)
@@ -52,16 +57,16 @@ class Dashboard(QWidget):
     def update_text_cell(self,cell_id, new_text):
         if cell_id == MESSURE.CO2 :
             self.cell0.update_text(new_text)
-        if cell_id == MESSURE.NO2 :
+        if cell_id == MESSURE.NOx :
             self.cell1.update_text(new_text)
             
-        if cell_id == MESSURE.SO2 :
+        if cell_id == MESSURE.PM1_0 :
             self.cell2.update_text(new_text)
             
-        if cell_id == MESSURE.CO :
+        if cell_id == MESSURE.PM2_5 :
             self.cell3.update_text(new_text)
             
-        if cell_id == MESSURE.O3 :
+        if cell_id == MESSURE.PM10 :
             self.cell4.update_text(new_text)
             
         if cell_id == MESSURE.VOC :
