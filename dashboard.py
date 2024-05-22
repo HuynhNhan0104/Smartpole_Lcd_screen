@@ -1,6 +1,8 @@
+from PySide6.QtCore import  QUrl ,QTimer, Signal, Slot
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QLabel,QSizePolicy, QVBoxLayout
 from PySide6.QtGui import QPixmap, QFont, QPalette, QColor
 import sys
+import random
 from cell import Cell
 
 class MESSURE(enumerate):
@@ -14,15 +16,16 @@ class MESSURE(enumerate):
     PM2_5 = 7
     PM4 = 8
     PM10 = 9
-    
-
-
-
 class Dashboard(QWidget):
     def __init__(self, width, height,x = 0,y = 0):
         super().__init__()
         self.setFixedSize(width,height)
         layout1 = QHBoxLayout()
+        
+        
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_data)
+        self.timer.start(10000)
         # print(width)
         self.cell0 = Cell("icon/CO2_icon.png","CO2 ppm",width/3, height/2,color="#FF6666")
         self.cell1 = Cell("icon/NOx_icon.png","NO2 ppm",width/3, height/2,color="#66FF66")
@@ -72,8 +75,21 @@ class Dashboard(QWidget):
         if cell_id == MESSURE.VOC :
             self.cell5.update_text(new_text)
         
-            
-        
+    def update_data(self):
+        # print("Starting update air")
+        co2 = random.randrange(1,100)
+        nox = random.randrange(1,100)
+        pm1 = random.randrange(1,100)
+        pm25 = random.randrange(1,100)
+        pm10 = random.randrange(1,100)
+        voc = random.randrange(1,100)
+        self.update_text_cell(MESSURE.CO2,f"{co2} ppm")
+        self.update_text_cell(MESSURE.PM1_0,f"{pm1} μg/m³")
+        self.update_text_cell(MESSURE.NOx,f"{nox} ppm")
+        self.update_text_cell(MESSURE.PM2_5,f"{pm25} μg/m³")
+        self.update_text_cell(MESSURE.PM10,f"{pm10} μg/m³")
+        self.update_text_cell(MESSURE.VOC,f"{voc} μg/m³") 
+
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)

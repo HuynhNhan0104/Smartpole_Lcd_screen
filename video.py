@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QUrl
+from PySide6.QtCore import  QUrl ,QTimer, Signal, Slot
 from PySide6.QtMultimedia import QMediaPlayer , QAudioOutput, QAudioDevice,QMediaDevices
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QLabel,QSizePolicy, QVBoxLayout, QFrame,QMainWindow
@@ -9,15 +9,19 @@ import vlc
 import streamlink
 
 class VideoWindow(QWidget):
+    change_source_signal = Signal(str)
+    
     def __init__(self,width=1000, height=1000, url=None) -> None:
         super().__init__()
         self.setFixedSize(width,height)
         layout = QVBoxLayout()
+        self.change_source_signal.connect(self.change_source)
         
         # url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
         # url=
         stream = streamlink.streams(url)
         url = stream['best'].to_url()
+        # url = stream['best'].to_manifest_url()
         self.video_player = QMediaPlayer()
         self.video_player.setSource(QUrl(url))
         
@@ -38,7 +42,21 @@ class VideoWindow(QWidget):
         layout.addWidget(self.videoWidget)
         self.setLayout(layout)
         
-   
+    @Slot(str)    
+    def change_source(self, new_url):
+        # new_url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
+        # print(f"POSITION{self.video_window.video_player.position()}")
+        self.video_player.stop()
+        stream = streamlink.streams(new_url)
+        # for key, value in stream.items():
+        #     print(f"Type:{key} ")
+        #     # print(f"\t {value}")
+        #     print(f"\t {value.to_url()}")
+        #     print(f'\t {value.to_manifest_url()}')
+        url = stream['best'].to_url()
+        # url = stream['best'].to_manifest_url()
+        self.video_player.setSource(QUrl(url))
+        self.video_player.play() 
     
 
 

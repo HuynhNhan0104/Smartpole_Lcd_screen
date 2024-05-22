@@ -1,4 +1,4 @@
-from PySide6.QtCore import  QUrl ,QTimer
+from PySide6.QtCore import  QUrl ,QTimer, Signal, Slot
 from PySide6.QtMultimedia import QMediaPlayer , QAudioOutput, QAudioDevice,QMediaDevices
 
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QLabel,QSizePolicy, QVBoxLayout
@@ -38,14 +38,7 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         layout.setSpacing(0)
         layout.setContentsMargins(0,0,0,0)
-        # create timer
         self.setLayout(layout)
-        # self.timer = QTimer()
-        # self.timer.timeout.connect(self.update_data)
-        # self.timer.start(10000)
-        
-        
-        
         # create mqtt
         self.client = mqttclient.Client("2013961")
         self.client.username_pw_set(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
@@ -59,38 +52,9 @@ class MainWindow(QWidget):
     def run(self):
         self.showFullScreen()
         self.video_window.video_player.play()
+        print("[App] running success")
         
-        timer_interupt= threading.Thread(target=self.update_data,args=(10,))
-        timer_interupt.setDaemon(True)
-        timer_interupt.start()
-        
-    def update_data(self,duration):
-        print(duration)
-        count = 0
-        while True:
-            try:
-                print(f"Tick: {count}")
-                if count == duration:
-                    print("Starting update air")
-                    co2 = random.randrange(1,100)
-                    nox = random.randrange(1,100)
-                    pm1 = random.randrange(1,100)
-                    pm25 = random.randrange(1,100)
-                    pm10 = random.randrange(1,100)
-                    voc = random.randrange(1,100)
-                    self.dashboard.update_text_cell(MESSURE.CO2,f"{co2} ppm")
-                    self.dashboard.update_text_cell(MESSURE.NOx,f"{nox} ppm")
-                    self.dashboard.update_text_cell(MESSURE.PM1_0,f"{pm1} μg/m³")
-                    self.dashboard.update_text_cell(MESSURE.PM2_5,f"{pm25} μg/m³")
-                    self.dashboard.update_text_cell(MESSURE.PM10,f"{pm10} μg/m³")
-                    self.dashboard.update_text_cell(MESSURE.VOC,f"{voc} μg/m³") 
-                    count = 0
-                else:
-                    count += 1
-                time.sleep(1)
-            except Exception as e:
-                print(e)
-                break
+    
           
     def on_subscribed(self, client, userdata, mid, granted_qos):
         print("subscribed successfully")
@@ -103,16 +67,10 @@ class MainWindow(QWidget):
             # process message here
             print(f"received message on topic {topic}: {data}")
             if topic == "NhanHuynh/feeds/link":
-                self.change_source(data)
-            #     self.video_window.video_player.pause()
-                
-            #     stream = streamlink.streams(data)
-            #     print(url)
-            #     url = stream['best'].to_url()
-            #     self.video_window.video_player.setSource(QUrl(url))
-            #     self.video_window.video_player.play()
-        except:
-            pass
+                self.video_window.change_source_signal[str].emit(data)
+                # self.change_source(data)
+        except Exception as e:
+            print(e)
         
     def on_connected(self, client, usedata, flags, rc):
         if rc == 0:
@@ -120,15 +78,7 @@ class MainWindow(QWidget):
                 client.subscribe(feed)
         else:
             print("Connection is failed")
-            
-    def change_source(self, new_url):
-        # new_url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
-        # print(f"POSITION{self.video_window.video_player.position()}")
-        self.video_window.video_player.stop()
-        stream = streamlink.streams(new_url)
-        url = stream['best'].to_url()
-        self.video_window.video_player.setSource(QUrl(url))
-        self.video_window.video_player.play()
+    
         
         
         
