@@ -4,7 +4,8 @@ from PySide6.QtGui import QPixmap, QFont, QPalette, QColor
 import sys
 import random
 from cell import Cell
-
+import requests
+import json
 class MESSURE(enumerate):
     CO2 = 0
     NOx = 1
@@ -77,18 +78,26 @@ class Dashboard(QWidget):
         
     def update_data(self):
         # print("Starting update air")
-        co2 = random.randrange(1,100)
-        nox = random.randrange(1,100)
-        pm1 = random.randrange(1,100)
-        pm25 = random.randrange(1,100)
-        pm10 = random.randrange(1,100)
-        voc = random.randrange(1,100)
-        self.update_text_cell(MESSURE.CO2,f"{co2} ppm")
-        self.update_text_cell(MESSURE.PM1_0,f"{pm1} μg/m³")
-        self.update_text_cell(MESSURE.NOx,f"{nox} ppm")
-        self.update_text_cell(MESSURE.PM2_5,f"{pm25} μg/m³")
-        self.update_text_cell(MESSURE.PM10,f"{pm10} μg/m³")
-        self.update_text_cell(MESSURE.VOC,f"{voc} μg/m³") 
+        api_url = "https://ezdata2.m5stack.com/api/v2/4827E2E30938/dataMacByKey/raw"
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            content= json.loads(response.content)
+            # print(json.dumps(content, indent=4))
+            data = content.get("data")
+            value_str = data.get("value").replace("\\", "")
+            value = json.loads(value_str)
+            co2 = value["scd40"]["co2"]
+            nox = 0 if value["sen55"]["nox"] is None else value["sen55"]["nox"]
+            pm1 = value["sen55"]["pm1.0"]
+            pm25 = value["sen55"]["pm2.5"]
+            pm10 = value["sen55"]["pm10.0"]
+            voc = value["sen55"]["voc"]
+            self.update_text_cell(MESSURE.CO2,f"{co2:.2f} ppm")
+            self.update_text_cell(MESSURE.PM1_0,f"{pm1:.2f} μg/m³")
+            self.update_text_cell(MESSURE.NOx,f"{nox:.2f} ppm")
+            self.update_text_cell(MESSURE.PM2_5,f"{pm25:.2f} μg/m³")
+            self.update_text_cell(MESSURE.PM10,f"{pm10:.2f} μg/m³")
+            self.update_text_cell(MESSURE.VOC,f"{voc:.2f} μg/m³") 
 
         
 if __name__ == '__main__':

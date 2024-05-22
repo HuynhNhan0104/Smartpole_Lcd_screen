@@ -23,6 +23,7 @@ if __name__ == '__main__':
     # url = "https://www.youtube.com/watch?v=RqFZRIiduY4"
     
     main_window = MainWindow(1920,1080,url)
+    main_window.dashboard.update_data()
     main_window.run()
     # print(main_window.video_window)
     # main_window.showFullScreen()
