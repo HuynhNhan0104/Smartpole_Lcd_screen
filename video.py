@@ -53,7 +53,7 @@ class VideoWindow(QWidget):
         #     # print(f"\t {value}")
         #     print(f"\t {value.to_url()}")
         #     print(f'\t {value.to_manifest_url()}')
-        url = stream['best'].to_url()
+        url = stream['480p'].to_url()
         # url = stream['best'].to_manifest_url()
         self.video_player.setSource(QUrl(url))
         self.video_player.play() 

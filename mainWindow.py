@@ -17,13 +17,13 @@ import threading
 # use QMQTT instead paho
 # MQTT declear
 
-ADAFRUIT_IO_USERNAME = "NhanHuynh"
+ADAFRUIT_IO_USERNAME = "GutD"
 ADAFRUIT_IO_KEY = ""
 BROKER_ADDRESS = "io.adafruit.com"
 PORT = 1883
 
 feeds_list = [
-    "NhanHuynh/feeds/link"
+    "GutD/feeds/live-stream"
 ]
 class MainWindow(QWidget):
     def __init__(self,width,height,url) -> None:
@@ -66,8 +66,11 @@ class MainWindow(QWidget):
         try:
             # process message here
             print(f"received message on topic {topic}: {data}")
-            if topic == "NhanHuynh/feeds/link":
-                self.video_window.change_source_signal[str].emit(data)
+            if topic == "GutD/feeds/live-stream":
+                print(type(data))
+                data = json.loads(data)
+                url_link = data.get("link")
+                self.video_window.change_source_signal[str].emit(url_link)
                 # self.change_source(data)
         except Exception as e:
             print(e)
