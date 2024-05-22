@@ -18,8 +18,8 @@ import threading
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    # url = "https://www.twitch.tv/mrpokke"
-    url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
+    url = "https://www.twitch.tv/mrpokke"
+    # url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
     # url = "https://www.youtube.com/watch?v=RqFZRIiduY4"
     
     main_window = MainWindow(1920,1080,url)

@@ -69,7 +69,7 @@ class MainWindow(QWidget):
         count = 0
         while True:
             try:
-                # print(f"Tick: {count}")
+                print(f"Tick: {count}")
                 if count == duration:
                     print("Starting update air")
                     co2 = random.randrange(1,100)
