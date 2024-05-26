@@ -69,10 +69,11 @@ class MainWindow(QWidget):
             if topic == "GutD/feeds/live-stream":
                 print(type(data))
                 data = json.loads(data)
-                id = data.get("ID")
-                print(id)
-                url_link = data.get("link")
-                self.video_window.change_source_signal[str].emit(url_link)
+                id_list = data.get("ID")
+                print(id_list)
+                if self.id in id_list:
+                    url_link = data.get("link")
+                    self.video_window.change_source_signal[str].emit(url_link)
                 # self.change_source(data)
         except Exception as e:
             print(e)
