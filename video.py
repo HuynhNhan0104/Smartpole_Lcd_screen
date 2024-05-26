@@ -20,6 +20,11 @@ class VideoWindow(QWidget):
         # url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
         # url=
         stream = streamlink.streams(url)
+        for key, value in stream.items():
+            print(f"Type:{key} ")
+            # print(f"\t {value}")
+            print(f"\t {value.to_url()}")
+            print(f'\t {value.to_manifest_url()}')
         url = stream['best'].to_url()
         # url = stream['best'].to_manifest_url()
         self.video_player = QMediaPlayer()

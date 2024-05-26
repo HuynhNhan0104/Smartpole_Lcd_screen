@@ -33,8 +33,7 @@ if __name__ == '__main__':
     # url = "https://www.youtube.com/watch?v=rKn4EQ3-Ns0"
     # url = "https://www.youtube.com/watch?v=RqFZRIiduY4"
     link = get_last_link()
-    print(link)
-    main_window = MainWindow(1920,1080,link)
+    main_window = MainWindow(1920,1080,link,0)
     main_window.dashboard.update_data()
     main_window.run()
     # print(main_window.video_window)

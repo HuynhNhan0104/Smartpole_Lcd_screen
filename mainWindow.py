@@ -26,10 +26,10 @@ feeds_list = [
     "GutD/feeds/live-stream"
 ]
 class MainWindow(QWidget):
-    def __init__(self,width,height,url) -> None:
+    def __init__(self,width,height,url,id) -> None:
         super().__init__()
         self.setFixedSize(width,height)
-        
+        self.id = id
         layout = QVBoxLayout()
         self.dashboard = Dashboard(width,height*0.3)
         layout.addWidget(self.dashboard,stretch=1)
@@ -69,6 +69,8 @@ class MainWindow(QWidget):
             if topic == "GutD/feeds/live-stream":
                 print(type(data))
                 data = json.loads(data)
+                id = data.get("ID")
+                print(id)
                 url_link = data.get("link")
                 self.video_window.change_source_signal[str].emit(url_link)
                 # self.change_source(data)
